@@ -7,8 +7,8 @@
       state: present
       auth:
         auth_url: https://api-frfly1.client.metacloud.net:5000/v2.0
-        username: johnkidd
-        password: 1Password!
+        username: <>
+        password: <>
         project_name: dev-MPOD
       name: username_n1
       availability_zone: frfly1

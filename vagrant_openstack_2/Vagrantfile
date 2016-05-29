@@ -1,0 +1,67 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+require 'vagrant-openstack-provider'
+
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+   # Every Vagrant virtual environment requires a box to build off of.
+   # ‘dummy’ is an empty box to build upon.
+   config.vm.box = "openstack"
+
+   # I created a keypair from the OpenStack Web UI and downloaded it.
+   config.ssh.private_key_path = "devops.pem"
+# Specify the OpenStack provider configuration options.
+   # (This file does not contain any other provider configurations.
+   # but it could.)
+   config.vm.provider :openstack do |os|
+
+      # In the OpenStack UI, there was an option to download a shell
+      # RC file with environment variables set to access the cloud.
+      # The following #{ENV['OS_USERNAME']} references assume those
+      # environment variables have been set up before the ‘vagrant up’
+      # command is run. 
+
+      # OpenStack Authentication - get from environment variables.
+      os.username = "#{ENV['OS_USERNAME']}"
+      os.password = "#{ENV['OS_PASSWORD']}"
+
+      # Select the image to use. I looked through the locally available
+      # images and selected a supported option. In this case I selected
+      # an image using Ubuntu 14, then selected the ‘tiny’ flavor
+      # (1 CPU and limited memory).
+      os.flavor = /m1.small/
+      #os.image = /Ubuntu-14.04-x86_64/
+      os.image = /devops_node_base/
+      # OpenStack identity endpoint – used to authenticate against.
+      os.openstack_auth_url = 'https://api-frfly1.client.metacloud.net:5000/v2.0'
+      os.openstack_image_url = 'https://api-frfly1.client.metacloud.net:9292/v1'
+      os.openstack_network_url = 'https://api-frfly1.client.metacloud.net:9696/v2.0'
+   
+   #   os.openstack_auth_url = "#{ENV['OS_AUTH_URL']}"
+      os.keypair_name = "devops"
+      os.ssh_username = "firefly"
+
+      # Prefix added to my instance. That is, the hostname in this
+      # case will be “play-“.
+      os.server_name = "play"
+
+      # Tenant/project name in OpenStack. This controls where the instance
+      # is created (e.g. which data center).
+      os.tenant_name = "#{ENV['OS_TENANT_NAME']}"
+      os.availability_zone  = 'frfly1'
+      os.security_groups    = ['default']
+      os.networks           = ['dev_mpod_net']
+   end
+
+   # Install puppet for in order for other provisioning to work.
+   # (Other base OS images may have Puppet pre-installed.)
+   #config.vm.provision :shell, inline: "sudo apt-get -y install puppet"
+
+      # Use Puppet to configure packages as required.
+    #  config.vm.provision :puppet do |puppet|
+     #    puppet.manifests_path = 'puppet/manifests'
+     #    puppet.manifest_file = 'site.pp'
+     #    puppet.module_path = 'puppet/modules'
+     # end
+end

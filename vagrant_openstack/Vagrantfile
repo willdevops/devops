@@ -22,6 +22,6 @@ Vagrant.configure('2') do |config|
     os.image              = 'devops_node_base'
     os.server_name        = 'vagrant_test'
     os.keypair_name      = 'devops_node_base'
-    #os.ssh_disabled      = 'true'
+    os.ssh_disabled      = 'true'
   end
 end

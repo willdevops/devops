@@ -1,8 +1,6 @@
 - name: launch a compute instance
   remote_user: cloud
-  become: true
   hosts: localhost
-  gather_facts: false
   tasks:
   - name: launch an instance
     os_server:
@@ -14,7 +12,7 @@
         project_name: dev-MPOD
       name: username_n1
       availability_zone: frfly1
-      image: devops_node_base
+      image: devops_node
       key_name: devops_node_base
       timeout: 200
       flavor: m1.small

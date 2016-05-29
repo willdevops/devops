@@ -1,0 +1,23 @@
+- name: launch a compute instance
+  remote_user: cloud
+  become: true
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: launch an instance
+    os_server:
+      state: present
+      auth:
+        auth_url: https://api-frfly1.client.metacloud.net:5000/v2.0
+        username: johnkidd
+        password: 1Password!
+        project_name: dev-MPOD
+      name: username_n1
+      availability_zone: frfly1
+      image: devops_node_base
+      key_name: devops_node_base
+      timeout: 200
+      flavor: m1.small
+      security_groups: default
+      network: dev_mpod_net
+      auto_ip: yes

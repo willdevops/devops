@@ -1,0 +1,24 @@
+- name: Deploy on OpenStack
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Deploy an instance
+    os_server:
+      state: present
+    auth:
+      username: johnkidd
+      password: 1Password!
+      login_tenant_name: dev-MPOD
+      auth_url: https://api-frfly1.client.metacloud.net:5000/v2.0
+      
+    name: devops_node
+      image_name: devops_node_base
+      key_name: devops_node_base
+      wait_for: 200
+      flavor_id: m1.small
+      auto_floating_ip: yes
+      nics:
+        - net-id: fa6af4e6-c44e-439c-a91c-03bcae55e587
+      meta:
+        hostname: one.cluster

@@ -20,7 +20,7 @@ Vagrant.configure('2') do |config|
       os.password           = "#{ENV['OS_PASSWORD']}"
       os.tenant_name        = 'dev-MPOD'
       os.availability_zone  = 'frfly1'
-      os.security_groups    = ['default']
+      os.security_groups    = ['allow-ssh-http-https-devops']
       os.networks           = [{name: 'dev_mpod_net', address: '10.90.0.130'}]
       os.flavor             = 'm1.small'
       os.image              = 'devops_node'
